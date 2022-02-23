@@ -3,15 +3,13 @@ const fs = require("fs");
 
 AWS.config.update({
   region: "us-east-2",
-  endpoint: "http://localhost:8000",
+  endpoint: "http://localhost:8000", //use for local instance only
 });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
 
 console.log("Importing thoughts into DynamoDB.  Please wait.");
-const allUsers = JSON.parse(
-  fs.readFileSync("./server/seed/user.json", "utf8")
-);
+const allUsers = JSON.parse(fs.readFileSync("./server/seed/user.json", "utf8"));
 
 allUsers.forEach((user) => {
   const params = {

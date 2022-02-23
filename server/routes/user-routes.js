@@ -5,7 +5,7 @@ const AWS = require("aws-sdk");
 //setup AWS connection
 const awsConfig = {
   region: "us-east-2",
-  endpoint: "http://localhost:8000",
+  endpoint: "http://localhost:8000" //use for local instance only
 };
 AWS.config.update(awsConfig);
 
@@ -20,7 +20,7 @@ router.get("/users", (req, res) => {
   const params = {
     TableName: table,
   };
-  // Scan returns all items in the table that meet the params 
+  // Scan returns all items in the table that meet the params
   dynamodb.scan(params, (err, data) => {
     if (err) {
       res.status(500).json(err); // an error occurred
@@ -58,25 +58,27 @@ router.get("/users/:username", (req, res) => {
 });
 
 // Create new user
-router.post('/users', (req, res) => {
-    const params = {
-      TableName: table,
-      Item: {
-        "username": req.body.username,
-        "createdAt": Date.now(),
-        "thought": req.body.thought
-      }
-    };
-    dynamodb.put(params, (err, data) => {
-      if (err) {
-        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-        res.status(500).json(err); // an error occurred
-      } else {
-        console.log("Added item:", JSON.stringify(data, null, 2));
-        res.json({"Added": JSON.stringify(data, null, 2)});
-      }
-    });
+router.post("/users", (req, res) => {
+  const params = {
+    TableName: table,
+    Item: {
+      username: req.body.username,
+      createdAt: Date.now(),
+      thought: req.body.thought,
+    },
+  };
+  dynamodb.put(params, (err, data) => {
+    if (err) {
+      console.error(
+        "Unable to add item. Error JSON:",
+        JSON.stringify(err, null, 2)
+      );
+      res.status(500).json(err); // an error occurred
+    } else {
+      console.log("Added item:", JSON.stringify(data, null, 2));
+      res.json({ Added: JSON.stringify(data, null, 2) });
+    }
   });
-
+});
 
 module.exports = router;
