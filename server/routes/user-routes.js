@@ -5,7 +5,7 @@ const AWS = require("aws-sdk");
 //setup AWS connection
 const awsConfig = {
   region: "us-east-2",
-  endpoint: "http://localhost:8000" //use for local instance only
+  //endpoint: "http://localhost:8000" //use for local instance only
 };
 AWS.config.update(awsConfig);
 
